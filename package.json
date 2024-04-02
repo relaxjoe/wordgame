@@ -1,0 +1,26 @@
+{
+  "name": "word_finder",
+  "version": "1.0.0",
+  "description": "an apllication that allows user to track progress of word game play",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/relaxjoe/Project2.git"
+  },
+  "author": "group1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/relaxjoe/Project2/issues"
+  },
+  "homepage": "https://github.com/relaxjoe/Project2#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "handlebars": "^4.7.8",
+    "mysql2": "^3.9.3",
+    "sequelize": "^6.37.2"
+  }
+}
