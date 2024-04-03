@@ -9,6 +9,13 @@ const routes = require('./controllers');
 const app = express();
 const port = process.env.PORT || 3306;
 
+// Set up handlebars engine
+const hbs = exphbs.create();
+
+// Tell express which template engine to use
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
 // Use Express's built-in middleware for json and urlencoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
