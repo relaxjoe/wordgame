@@ -1,4 +1,4 @@
-# Wordle-Like Game API
+# Nerdle
 
 This project is a backend API for a Wordle-like game, where users guess words within a certain number of attempts. It's built with Node.js, Express, Sequelize, MySQL, and uses dotenv for environment configuration.
 
