@@ -52,31 +52,5 @@ router.post('/login', validateUserInput, async (req, res) => {
       return res.status(400).json({ message: 'Incorrect email or password, try again!' });
     }
 
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-      console.log('User logged in');
-      res.json({ user: userData, message: 'You are logged in!' });
-    });
-
-  } catch (err) {
-    console.error('Error logging in user:', err);
-    res.status(400).json(err);
-  }
-});
-
-router.post('/logout', (req, res) => {
-  if (req.session.logged_in) {
-    console.log('Logging out user...');
-    req.session.destroy(() => {
-      console.log('User successfully logged out!');
-      res.status(204).end();
-    });
-  } else {
-    console.log('User not logged in');
-    res.status(404).end();
-  }
-});
 
 module.exports = router;
-
