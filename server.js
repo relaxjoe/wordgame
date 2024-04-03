@@ -1,8 +1,10 @@
 require('dotenv').config(); // This line should be at the very top
 
 const express = require('express');
+const exphbs = require('express-handlebars');
 const { Sequelize } = require('sequelize');
 const authRoutes = require('./utils/auth');
+const routes = require('./controllers');
 
 const app = express();
 const port = process.env.PORT || 3306;
@@ -24,11 +26,12 @@ sequelize.authenticate()
 
 // Use the authentication routes
 app.use('/auth', authRoutes);
+app.use(routes);
 
 // Define a simple route for the home page
-app.get('/', (req, res) => {
-  res.send('Welcome to the Wordle Game API!');
-});
+// app.get('/', (req, res) => {
+//   res.send('Welcome to the Wordle Game API!');
+// });
 
 // Start the server
 app.listen(port, () => {
