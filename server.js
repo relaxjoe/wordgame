@@ -1,10 +1,10 @@
-require('dotenv').config(); // This line should be at the very top
+require("dotenv").config(); // This line should be at the very top
 
-const express = require('express');
-const exphbs = require('express-handlebars');
-const { Sequelize } = require('sequelize');
-const authRoutes = require('./utils/auth');
-const routes = require('./controllers');
+const express = require("express");
+const exphbs = require("express-handlebars");
+const { Sequelize } = require("sequelize");
+const authRoutes = require("./utils/auth");
+const routes = require("./controllers");
 
 const app = express();
 const port = process.env.PORT || 3306;
@@ -13,26 +13,41 @@ const port = process.env.PORT || 3306;
 const hbs = exphbs.create();
 
 // Tell express which template engine to use
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
+
+//tells our where out images folder
+app.use(express.static('views'))
+
+app.get("/static", (req, res) => { 
+  res.render("static"); 
+}); 
 
 // Use Express's built-in middleware for json and urlencoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Initialize Sequelize to connect to your MySQL database using environment variables
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql'
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+  }
+);
 
 // Test the database connection
-sequelize.authenticate()
-  .then(() => console.log('Database connection has been established successfully.'))
-  .catch(err => console.error('Unable to connect to the database:', err));
+sequelize
+  .authenticate()
+  .then(() =>
+    console.log("Database connection has been established successfully.")
+  )
+  .catch((err) => console.error("Unable to connect to the database:", err));
 
 // Use the authentication routes
-app.use('/auth', authRoutes);
+app.use("/auth", authRoutes);
 app.use(routes);
 
 // Define a simple route for the home page
