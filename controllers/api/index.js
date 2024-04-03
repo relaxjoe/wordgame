@@ -4,7 +4,7 @@ const router = require('express').Router();
 const userRoutes = require('./userRoutes');
 const dictionaryRoutes = require('./dictionaryRoutes');
 
-router.use('/users', userRoutes);
+router.use('/user', userRoutes);
 router.use('/dictionary', dictionaryRoutes);
 
 module.exports = router;
