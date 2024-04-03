@@ -1,33 +1,25 @@
-require('dotenv').config(); // This line should be at the very top
-
+// server.js
 const express = require('express');
-const { Sequelize } = require('sequelize');
-const authRoutes = require('./utils/auth');
+const { engine } = require('express-handlebars');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3306;
 
-// Use Express's built-in middleware for json and urlencoded form data
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Set up Handlebars view engine
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 
-// Initialize Sequelize to connect to your MySQL database using environment variables
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql'
-});
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Test the database connection
-sequelize.authenticate()
-  .then(() => console.log('Database connection has been established successfully.'))
-  .catch(err => console.error('Unable to connect to the database:', err));
-
-// Use the authentication routes
-app.use('/auth', authRoutes);
-
-// Define a simple route for the home page
+// Route for the homepage
 app.get('/', (req, res) => {
-  res.send('Welcome to the Wordle Game API!');
+    res.render('homepage', {
+        // Pass the path to your logo image and any other data your template needs
+        imageUrl: '/public/nerdlelogo.jpeg', // Ensure this matches the path to your image in the 'public' directory
+    });
 });
 
 // Start the server
