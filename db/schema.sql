@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS nerdlewordgame_db;
+DROP DATABASE IF EXISTS nerdle_db;
 
-CREATE DATABASE nerdlewordgame_db;
+CREATE DATABASE nerdle_db;
