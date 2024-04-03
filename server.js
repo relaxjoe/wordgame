@@ -2,7 +2,7 @@ require('dotenv').config(); // This line should be at the very top
 
 const express = require('express');
 const { Sequelize } = require('sequelize');
-const authRoutes = require('./controllers/authRoutes');
+const authRoutes = require('./utils/auth');
 
 const app = express();
 const port = process.env.PORT || 3306;
