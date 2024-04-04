@@ -1,4 +1,4 @@
-const express = require('express');
+const router = require('express').Router()
 const { Dictionary } = require('../../models')
 
 // Route getting all words in dictionary
