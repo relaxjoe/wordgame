@@ -1,25 +1,31 @@
-<link
-  href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-  rel="stylesheet"
-/>
-<body class="w-50px h-50px" style="background-image: url('img/white-wooden-texture-flooring-background.jpg')" />
-
-<div class="flex flex-col min-h-screen justify-center items-center">
-  <div class="justify-center">
-    <img class="w-100"src="img/nerdlelogo.jpeg" alt="Nerdle logo" />
-    <br />
-  </div>
-  <div class="justify-center items-center">
-    <h1>Nerdle</h1>
-    <br />
-    <h2 class="">5 Chances to guess a 4-letter word</h2>
-  </div>
-  <br />
-  <div>
-    <button
-      class="h-18 px-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-      id="Login"
-    >Login</button>
-  </div>
-
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Nerdle</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            /* Adjust for background size and repeat */
+            background-image: url('/img/white-wooden-texture-flooring-background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-center items-center">
+    <div class="text-center">
+        <img class="w-32 md:w-48" src="/img/nerdlelogo.jpeg" alt="Nerdle logo">
+    </div>
+    <div class="text-center mt-8">
+        <h1 class="text-4xl font-bold">Nerdle</h1>
+        <h2 class="text-xl mt-4">5 Chances to guess a 4-letter word</h2>
+    </div>
+    <div class="mt-8">
+        <button id="login" class="h-12 px-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            Login
+        </button>
+    </div>
+</body>
+</html>
