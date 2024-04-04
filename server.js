@@ -1,26 +1,59 @@
-// server.js
-const express = require('express');
-const { engine } = require('express-handlebars');
-const path = require('path');
+require("dotenv").config(); // This line should be at the very top
+
+const express = require("express");
+const exphbs = require("express-handlebars");
+const { Sequelize } = require("sequelize");
+const authRoutes = require("./utils/auth");
+const routes = require("./controllers");
 
 const app = express();
 const port = process.env.PORT || 3306;
 
-// Set up Handlebars view engine
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'));
+// Set up handlebars engine
+const hbs = exphbs.create();
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Tell express which template engine to use
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
 
-// Route for the homepage
-app.get('/', (req, res) => {
-    res.render('homepage', {
-        // Pass the path to your logo image and any other data your template needs
-        imageUrl: '/public/nerdlelogo.jpeg', // Ensure this matches the path to your image in the 'public' directory
-    });
-});
+//tells our where out images folder
+app.use(express.static('views'))
+
+app.get("/static", (req, res) => { 
+  res.render("static"); 
+}); 
+
+// Use Express's built-in middleware for json and urlencoded form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Initialize Sequelize to connect to your MySQL database using environment variables
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+  }
+);
+
+// Test the database connection
+sequelize
+  .authenticate()
+  .then(() =>
+    console.log("Database connection has been established successfully.")
+  )
+  .catch((err) => console.error("Unable to connect to the database:", err));
+
+// Use the authentication routes
+app.use("/auth", authRoutes);
+app.use(routes);
+
+// Define a simple route for the home page
+// app.get('/', (req, res) => {
+//   res.send('Welcome to the Wordle Game API!');
+// });
 
 // Start the server
 app.listen(port, () => {
