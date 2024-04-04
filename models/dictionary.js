@@ -21,7 +21,7 @@ Dictionary.init(
             allowNull: true,
             references: {
                 model: 'user',
-                key: 'key',
+                key: 'id',
             },
         },
     },
@@ -30,6 +30,8 @@ Dictionary.init(
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: "user",
+    modelName: "dictionary",
   }
-)
+);
+
+module.exports = Dictionary;
