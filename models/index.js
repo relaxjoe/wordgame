@@ -1,15 +1,14 @@
-const User = require('./User');
-const Project = require('./Project');
+const User = require('./user');
+const Dictionary = require('./dictionary');
 
-// Creates a relationship between User and Project model
-User.hasMany(Project, {
+// Creates a relationship between models
+User.hasMany(Dictionary, {
   foreignKey: 'user_id',
   onDelete: 'CASCADE'
 });
 
-// Creates a relationship between User and Project model
-Project.belongsTo(User, {
+Dictionary.belongsTo(User, {
   foreignKey: 'user_id'
 });
 
-module.exports = { User, Project };
+module.exports = { User, Dictionary };
