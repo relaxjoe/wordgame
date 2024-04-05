@@ -20,8 +20,8 @@ router.get("/", async (req, res) => {
     // layout: false is a placeholder and should be deleted when we have a handlebars {{{body}}}
     res.render("homepage", {
       layout: false,
-      words,
-      logged_in: req.session.logged_in
+      // words,
+      // logged_in: req.session.logged_in
     });
   } catch (err) {
     res.status(500).json(err);
@@ -29,12 +29,12 @@ router.get("/", async (req, res) => {
 });
 
 // Render the login page
-router.get('/login', (req, res) => {
-  if (req.session.logged_in) {
-    res.redirect('/');
-    return;
-  }
+router.get('/', (req, res) => {
+  // if (req.session.logged_in) {
+  //   res.redirect('/');
+  //   return;
+  // }
 
-  res.render('login');
+  res.render('l');
 })
 module.exports = router;
