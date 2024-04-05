@@ -18,6 +18,7 @@ app.set("view engine", "handlebars");
 
 //tells our where out images folder
 app.use(express.static('views'))
+app.use(express.static('public'))
 
 app.get("/static", (req, res) => { 
   res.render("static"); 

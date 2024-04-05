@@ -38,6 +38,7 @@ const signupFormHandler = async (event) => {
     
 
 };
+}
 
 document
   .querySelector(".login-card")
