@@ -1,3 +1,4 @@
+-- Active: 1710293330467@@127.0.0.1@3306
 DROP DATABASE IF EXISTS nerdle_db;
 
 CREATE DATABASE nerdle_db;

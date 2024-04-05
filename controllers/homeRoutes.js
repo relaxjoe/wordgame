@@ -28,7 +28,7 @@ router.get('/main', async (req, res) => {
     res.render('main', {
       ...User,
       words,
-      // layout: false,
+      layout: false,
     });
   } catch (err) {
     res.status(500).json(err);
