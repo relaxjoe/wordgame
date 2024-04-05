@@ -3,7 +3,14 @@ const withAuth = require('../utils/auth');
 const { User, Dictionary } = require('../models');
 
 // Render the homepage
-router.get("/", async (req, res) => {
+router.get('/', (req, res) => {
+  res.render('homepage', {
+    layout: false,
+  })
+});
+
+// Render the main page
+router.get('/main', async (req, res) => {
   try {
     const dictionaryData = await Dictionary.findAll({
       include: [
@@ -18,10 +25,8 @@ router.get("/", async (req, res) => {
     const words = dictionaryData.map((word) => word.get({ plain: true }));
 
     // layout: false is a placeholder and should be deleted when we have a handlebars {{{body}}}
-    res.render("homepage", {
+    res.render('main', {
       layout: false,
-      // words,
-      // logged_in: req.session.logged_in
     });
   } catch (err) {
     res.status(500).json(err);
@@ -29,12 +34,9 @@ router.get("/", async (req, res) => {
 });
 
 // Render the login page
-router.get('/', (req, res) => {
-  // if (req.session.logged_in) {
-  //   res.redirect('/');
-  //   return;
-  // }
-
-  res.render('l');
+router.get('/login', (req, res) => {
+  res.render('login', {
+    layout: false,
+  });
 })
 module.exports = router;
