@@ -16,17 +16,19 @@ router.get('/main', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: [],
+          attributes: ['username', 'streak', 'score'], // Attributes to include from the User model
         },
       ],
     });
 
     // Serialize the data
     const words = dictionaryData.map((word) => word.get({ plain: true }));
-
+  
     // layout: false is a placeholder and should be deleted when we have a handlebars {{{body}}}
     res.render('main', {
-      layout: false,
+      ...User,
+      words,
+      // layout: false,
     });
   } catch (err) {
     res.status(500).json(err);
