@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Dictionary } = require('../../models')
+const { Dictionary, User } = require('../../models')
 
 // Route getting all words in dictionary
 router.get('/', async (req, res) => {
@@ -11,6 +11,23 @@ router.get('/', async (req, res) => {
         // Logging errors and error added error message
         console.error('Error fetching dictonary:', err);
         res.status(500).json({ message: 'Internal error' });
+    }
+});
+
+// Get one word
+router.get('/:id', async (req, res) => {
+    try {
+        const word = await Dictionary.findByPk(req.params.id, {
+            include: [{ model: User }],
+        });
+        if(!word) {
+            res.status(404).json({ message: 'No word with that id exists.'});
+            return;
+        }
+
+        res.status(200).json(word);
+    } catch (err) {
+        res.status(500).json(err);
     }
 });
 

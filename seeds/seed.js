@@ -1,14 +1,20 @@
 const sequelize = require('../config/connection');
-const Word = require('../models/dictionary');
+const { Dictionary, User } = require('../models');
 const wordData = require('./wordData.json');
+const userData = require('./userData.json');
 
 const seedDatabase = async () => {
   await sequelize.sync({ force: true });
 
-  await Word.bulkCreate(wordData, {
+  await Dictionary.bulkCreate(wordData, {
     individualHooks: true,
     returning: true,
   });
+
+  await User.create(userData, {
+    individualHooks: true,
+    returning: true,
+  })
 
   process.exit(0);
 };
