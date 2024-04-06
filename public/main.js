@@ -44,6 +44,37 @@ const fetchNext = async () => {
 
 };
 
+// Checks the letters that haven't been colored by the previous functions
+function checkRemaining() {
+    for(i = 0; i < 4; i++) {
+        if(wordArray[i].style.color === 'yellow' || wordArray[i].style.color === 'green') {
+            // Turn gray
+            return;
+        }
+        // Turn yellow
+    }
+};
+
+// Checks if the letter is not in the array at all
+function checkGray() {
+    for(i = 0; i < 4; i++) {
+        if(!wordArray[i].includes(guessArray[i])) {
+            // turn guessArray[i] gray
+        }
+    }
+    checkRemaining();
+};
+
+// Checks if the letter is correct + in correct position
+function checkGreen() {
+    for(i = 0; i < 4; i++) {
+        if(wordArray[i] === guessArray[i]) {
+            // turn guessArray[i] green
+        }
+    }
+    checkGray();
+};
+
 // Turn the word into an array
 let wordArray = fetchNext().split('');
 // TO DO: Get the user's guess and split it like in the line above
@@ -58,17 +89,15 @@ const processGuess = async (userId, guess) => {
         // Continue with processing the guess...
         const wordArray = word.split('');
         const guessArray = guess.split('');
-        guessArray.forEach((letter, index) => {
-            if (letter === wordArray[index]) {
-                // Letter matched, update UI or perform other actions
-            }
-        });
+        checkGreen();
     } catch (error) {
         console.error(error);
         // Handle error
     }
 };
-// TO DO: Read the input and loop through each letter
+
+
+
 
 // Example usage:
 const userId = 1; // Assuming the user ID is 1
