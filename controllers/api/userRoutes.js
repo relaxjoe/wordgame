@@ -18,10 +18,9 @@ const validateUserInput = (req, res, next) => {
 
 router.post("/signup", validateUserInput, async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { email, password } = req.body;
 
     const newUser = await User.create({
-      username,
       email,
       password,
     });

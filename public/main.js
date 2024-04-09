@@ -10,13 +10,16 @@ const isWordCompleted = async (userId, word) => {
         const user = await User.findByPk(userId);
         if (!user) {
             throw new Error('User not found');
+
+        // If the word is in the user's completed list, repeats the function with the next word
+        } else if(user.word_id.includes(wordId)) {
+            wordId++;
+            isWordCompleted();
+
+        } else {
+            return true;
         }
 
-        // Get the user's completed words list
-        const completedWords = await user.getCompletedWords();
-
-        // Check if the word is in the completed words list
-        return completedWords.some(completedWord => completedWord.word === word);
     } catch (error) {
         console.error(error);
         throw new Error('Failed to check if the word is completed.');
@@ -44,10 +47,13 @@ const fetchNext = async () => {
 
 };
 
+// Turn the word into an array
+let wordArray = fetchNext().split('');
+
 // Checks the letters that haven't been colored by the previous functions
 function checkRemaining() {
     for(i = 0; i < 4; i++) {
-        if(wordArray[i].style.color === 'yellow' || wordArray[i].style.color === 'green') {
+        if(!wordArray.includes(guessArray[i])) {
             // Turn gray
             return;
         }
@@ -58,7 +64,7 @@ function checkRemaining() {
 // Checks if the letter is not in the array at all
 function checkGray() {
     for(i = 0; i < 4; i++) {
-        if(!wordArray[i].includes(guessArray[i])) {
+        if(!wordArray.includes(guessArray[i])) {
             // turn guessArray[i] gray
         }
     }
@@ -70,13 +76,13 @@ function checkGreen() {
     for(i = 0; i < 4; i++) {
         if(wordArray[i] === guessArray[i]) {
             // turn guessArray[i] green
+            wordArray[i] = '#'
         }
     }
     checkGray();
 };
 
-// Turn the word into an array
-let wordArray = fetchNext().split('');
+
 // TO DO: Get the user's guess and split it like in the line above
 const processGuess = async (userId, guess) => {
     try {
