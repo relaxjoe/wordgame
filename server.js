@@ -2,6 +2,7 @@ require("dotenv").config(); // This line should be at the very top
 
 const express = require("express");
 const exphbs = require("express-handlebars");
+const session = require('express-session');
 // const { Sequelize } = require("sequelize");
 const sequelize = require("./config/connection");
 const authRoutes = require("./utils/auth");
@@ -9,6 +10,13 @@ const routes = require("./controllers");
 
 const app = express();
 const port = process.env.PORT || 3001;
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 // Set up handlebars engine
 const hbs = exphbs.create();
