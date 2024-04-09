@@ -1,6 +1,7 @@
 const { User, Dictionary } = require('../models');
 const fetch = require("node-fetch-retry");
 
+
 let wordId = 1;
 // TO DO: Check if the word is in the user's completed list and return true or false
 
