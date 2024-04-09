@@ -1,62 +1,123 @@
-<!-- Login and singup forms -->
-<div class="row justify-space-between-md">
-  <!-- Login card and form -->
-  <div class="login-card">
-    <h2 class="page-title">Login</h2>
-    <form class="form login-form" id="login-form" 
-      method="POST"
-      action="/api/user/login"> 
-      <div class="form-group">
-        <label for="email-login">Email:</label>
-        <input name="email" class="form-input" type="text" id="email-login" />
-      </div>
-      <div class="form-group">
-        <label for="password-login">Password:</label>
-        <input name="password" class="form-input" type="password" id="password-login" />
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" type="submit">Login</button>
-      </div>
-    </form>
-  </div>
-  <!-- Signup card and form -->
-  <div class="signup-card">
-    <h2 class="page-title">Signup</h2>
-    <form
-      method="POST"
-      action="/api/user"
-      class="form signup-form"
-      id="signup-form"
-    >
-      {{!-- <div class="form-group">
-        <label for="username-signup">Username:</label>
-        <input
-          name="username"
-          class="form-input"
-          type="text"
-          id="username-signup"
-        />
-      </div> --}}
-      <div class="form-group">
-        <label for="email-signup">Email:</label>
-        <input name="email" class="form-input" type="text" id="email-signup" />
-      </div>
-      <div class="form-group">
-        <label for="password-signup">Password:</label>
-        <input
-          name="password"
-          class="form-input"
-          type="password"
-          id="password-signup"
-        />
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" type="submit">Signup</button>
-      </div>
-    </form>
-  </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Nerdle</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body { /* Adjust for background size and repeat */ background-image:
+      url('/img/white-wooden-texture-flooring-background.jpg'); background-size:
+      cover; background-repeat: no-repeat; }
 
-</div>
+       @keyframes wave {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
 
+       .waving-text {
+            display: inline-block;
+        }
+
+        .waving-text:hover {
+            animation: wave 1s infinite;
+        }
+         
+    </style>
+    </style>
+  </head>
+  <body class="flex flex-col min-h-screen justify-center items-center">
+    <!-- Login and Signup forms -->
+    <div class="flex justify-center w-1/2 h-1/2 space-x-4">
+      <!-- Login card and form -->
+      <div class="login-card border p-4 w-1/2 flex justify-center items-center bg-white">
+        <div class="w-full">
+          <!-- Added this wrapper div to evenly space content within the card -->
+          <h2 class="text-center mb-4 text-3xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text">Login</h2>
+          <form
+            class="form login-form"
+            id="login-form"
+            method="POST"
+            action="/api/user/login"
+          >
+            <div class="form-group mb-2">
+              <label class="text-2xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text" for="email-login">Email:</label>
+              <input
+                name="email"
+                class="px-1 border-2 form-input w-full"
+                type="text"
+                id="email-login"
+              />
+            </div>
+            <div class="form-group mb-2">
+              <label class="text-2xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text" for="password-login">Password:</label>
+              <input
+                name="password"
+                class="px-1 border-2 form-input w-full"
+                type="password"
+                id="password-login"
+              />
+            </div>
+            <div class="form-group mb-2">
+              <button
+                class="waving-text btn btn-primary w-full  text-2xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text"
+                type="submit"
+              >Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Signup card and form -->
+      <div
+        class="signup-card border p-4 w-1/2 flex justify-center items-center bg-white"
+      >
+        <div class="w-full">
+          <!-- Added this wrapper div to evenly space content within the card -->
+          <h2 class="page-title text-center mb-4 text-3xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text">Signup</h2>
+          <form
+            method="POST"
+            action="/api/user"
+            class="form signup-form"
+            id="signup-form"
+          >
+            <div class="form-group mb-2">
+              <label class="text-2xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text" for="email-signup">Email:</label>
+              <input
+                name="email"
+                class="px-1 border-2 form-input w-full"
+                type="text"
+                id="email-signup"
+              />
+            </div>
+            <div class="form-group mb-2 text-black">
+              <label class="text-2xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text" for="password-signup">Password:</label>
+              <input
+                name="password"
+                class="px-1 border-2 form-input w-full"
+                type="password"
+                id="password-signup"
+              />
+            </div>
+            <div class="form-group mb-2">
+              <button
+                class="waving-text btn btn-primary w-full text-2xl font-bold bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 text-transparent bg-clip-text"
+                type="submit"
+              >Signup</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
 
 <script src="/login.js"></script>
