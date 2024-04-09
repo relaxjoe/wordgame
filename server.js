@@ -65,7 +65,7 @@ app.use(routes);
 //   res.send('Welcome to the Wordle Game API!');
 // });
 sequelize.sync({ force: false }).then(() => {
-  app.listen(port, () => console.log('Now listening'));
+  app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
 });
 // Start the server
 // app.listen(port, () => {
