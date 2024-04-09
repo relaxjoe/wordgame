@@ -27,6 +27,8 @@ router.post("/signup", validateUserInput, async (req, res) => {
     // Redirect to main gameplay page upon successful signup
     req.session.user_id = newUser.id;
     req.session.logged_in = true;
+    req.session.email = userData.email;
+    req.session.save();
     res.redirect("main");
   } catch (error) {
     console.error("Error:", error);
@@ -51,9 +53,12 @@ router.post("/login", validateUserInput, async (req, res) => {
     }
 
     // Saving user ID and set logged-in for game
+    console.log(userData.email);
     req.session.user_id = userData.id;
     req.session.logged_in = true;
+    req.session.email = userData.email;
     console.log("User logged in successfully");
+    req.session.save();
     // Respond with user data and success message
     res.json({ user: userData, message: "You are now logged in!" });
   } catch (err) {
