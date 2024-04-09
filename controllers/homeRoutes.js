@@ -23,10 +23,9 @@ router.get('/main', async (req, res) => {
 
     // Serialize the data
     const words = dictionaryData.map((word) => word.get({ plain: true }));
-  
     // layout: false is a placeholder and should be deleted when we have a handlebars {{{body}}}
     res.render('main', {
-      ...User,
+      email: req.session.email ?? 'bob@hotmail.com',
       words,
       layout: false,
     });
