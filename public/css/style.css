@@ -1,0 +1,8 @@
+body {
+    /* Adjust for background size and repeat */
+    background-image: url('/views/img/white-wooden-texture-flooring-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
