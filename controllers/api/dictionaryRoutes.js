@@ -16,16 +16,15 @@ router.get("/", async (req, res) => {
 
 router.get("/getNewWord", async (req, res) => {
   try {
-    const word = await Dictionary.findAll();
+    const words = await Dictionary.findAll();
     const userData = await User.findByPk(req.session.user_id);
     const userCompletedWords = new Set(
       userData.word_id.split(",").map((item) => parseInt(item))
     );
-    const uncompletedWords = word.filter(
+    const uncompletedWords = words.filter(
       (item) => !userCompletedWords.has(item.id)
     );
     const randomIndex = parseInt(Math.random() * uncompletedWords.length);
-    console.log(word, userData);
     res.json({ word: uncompletedWords[randomIndex]});
   } catch (err) {
     res.status(500).json({ message: "Internal error" });

@@ -1,19 +1,25 @@
-// const { User, Dictionary } = require('../models');
-// const fetch = require("node-fetch-retry");
+const btn = document.querySelector('#btn');
+const guessField = document.querySelector('#guess-field');
+const board = document.querySelector('#board');
 
+let secretWord;
+let wordArray;
+let guessArray;
+let guessCount = 0;
 
 //calls when user begins game
 const getWord = async () => {
   try {
-    const word = await fetch("/api/dictionary/getNewWord");
-    const wordData = await word.json();
-    console.log(wordData);
+    const response = await fetch("/api/dictionary/getNewWord");
+    const data = await response.json();
+    secretWord = data.word.word;
+    wordArray = secretWord.split('')
   } catch (err) {
-    console.log("error");
+    console.log(err);
   }
 };
 
-// getWord();
+
 
 //call function when user completes all parts of section, and pass the word_id, play again should call 
 const completeWord = async (wordId) => {
@@ -23,106 +29,63 @@ const completeWord = async (wordId) => {
     } catch (err) {
         console.log("error")
     }
-}
-// let wordId = 1;
-// TO DO: Check if the word is in the user's completed list and return true or false
-
-// const isWordCompleted = async (userId, word) => {
-//     try {
-//         // Find the user by their ID
-//         const user = await User.findByPk(userId);
-//         if (!user) {
-//             throw new Error('User not found');
-
-//         // If the word is in the user's completed list, repeats the function with the next word
-//         } else if(user.word_id.includes(wordId)) {
-//             wordId++;
-//             isWordCompleted();
-
-//         } else {
-//             return true;
-//         }
-
-//     } catch (error) {
-//         console.error(error);
-//         throw new Error('Failed to check if the word is completed.');
-//     }
-// };
-
-// // TO DO: Fetch the next word on the list
-const fetchNext = async () => {
-  try {
-    const response = await fetch(`/api/dictionary/${wordId}`, {
-      method: "GET",
-    });
-    if (response.ok) {
-      const newWord = await response.json();
-      console.log(JSON.stringify(newWord.word));
-      return JSON.stringify(newWord.word);
-    } else {
-      throw new Error("Failed to retrieve a new word.");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Failed to retrieve a new word.");
-  }
 };
 
-// // Turn the word into an array
-// let wordArray = fetchNext().split('');
+// Checks for yellow letters
+function checkPresent(increment, cloneArray) {
+    for(let i = 0; i < 4; i++) {
+        if (cloneArray.includes(guessArray[i])) {
+        board.children[i + increment].setAttribute('style', 'background-color: yellow;');
 
-// // Checks the letters that haven't been colored by the previous functions
-// function checkRemaining() {
-//     for(i = 0; i < 4; i++) {
-//         if(!wordArray.includes(guessArray[i])) {
-//             // Turn gray
-//             return;
-//         }
-//         // Turn yellow
-//     }
-// };
+        // Identifies the first instance of the present letter and disguises it so repeats won't both be yellow
+        let presentLetter = cloneArray.indexOf(guessArray[i]);
+        cloneArray.splice(presentLetter, 1, '#');
 
-// // Checks if the letter is not in the array at all
-// function checkGray() {
-//     for(i = 0; i < 4; i++) {
-//         if(!wordArray.includes(guessArray[i])) {
-//             // turn guessArray[i] gray
-//         }
-//     }
-//     checkRemaining();
-// };
+            // Checks for yellows again in case of doubles
+            if (cloneArray.includes(guessArray[i])) {
+                board.children[i + increment].setAttribute('style', 'background-color: yellow;');
+            }
+        }
+    };
+}
 
-// // Checks if the letter is correct + in correct position
-// function checkGreen() {
-//     for(i = 0; i < 4; i++) {
-//         if(wordArray[i] === guessArray[i]) {
-//             // turn guessArray[i] green
-//             wordArray[i] = '#'
-//         }
-//     }
-//     checkGray();
-// };
 
-// // TO DO: Get the user's guess and split it like in the line above
-// const processGuess = async (userId, guess) => {
-//     try {
-//         const word = await fetchNext();
-//         const isCompleted = await isWordCompleted(userId, word);
-//         if (isCompleted) {
-//             console.log('The word is already completed by the user.');
-//             return;
-//         }
-//         // Continue with processing the guess...
-//         const wordArray = word.split('');
-//         const guessArray = guess.split('');
-//         checkGreen();
-//     } catch (error) {
-//         console.error(error);
-//         // Handle error
-//     }
-// };
+function checkLetters(increment) {
+    const cloneArray = [...wordArray];
+    for(let i = 0; i < 4; i++) {
 
-// // Example usage:
-// const userId = 1; // Assuming the user ID is 1
-// const userGuess = 'example'; // Get the user's guess
-// processGuess(userId, userGuess); // Process the user's guess
+        // Defaults all tiles to gray
+        board.children[i + increment].setAttribute('style', 'background-color: gray;');
+
+        // Turns the correct letter(s) green
+        if(cloneArray[i] === guessArray[i]) {
+            board.children[i + increment].setAttribute('style', 'background-color: green;');
+            // Disguises the correct letter so it's not tagged by checkPresent
+            cloneArray[i] = '#';            
+        }
+    };
+    checkPresent(increment, cloneArray);
+};
+
+// Displays the letters on the row and calls the function to color them
+const renderGuess = (guessArray) => {
+    const increment = guessCount * 4;
+    for(let i = 0; i < 4; i++) {
+        board.children[i + increment].append(guessArray[i]);
+    }
+    checkLetters(increment);
+};
+
+btn.addEventListener('click', function() {
+    guessArray = guessField.value.split('');
+    console.log(wordArray);
+    renderGuess(guessArray);
+    guessCount++;
+});
+
+
+
+
+getWord();
+
+

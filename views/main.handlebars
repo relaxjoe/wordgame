@@ -22,17 +22,33 @@
       <div class="mt-8 flex justify-center items-center">
         <div class="grid grid-cols-4 gap-4">
           <!-- 4x6 grid for the game -->
-          {{#each rows as |row rowIndex|}}
-            <div class="flex justify-between space-x-1">
-              {{#each row as |cell cellIndex|}}
-                <div
-                  class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"
-                >
-                  {{cell}}
-                </div>
-              {{/each}}
+            <div id="board" class="grid grid-cols-4 gap-4">
+
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+                <div class="w-16 h-16 bg-white border border-gray-300 flex justify-center items-center text-lg font-bold uppercase"></div>
+
             </div>
-          {{/each}}
+            <input id="guess-field" type="text" max="4" />
+            <button id="btn">Guess</button>
+
         </div>
       </div>
     </div>
