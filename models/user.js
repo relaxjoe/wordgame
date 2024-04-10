@@ -40,12 +40,8 @@ User.init(
       allowNull: true,
     },
     word_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true,
-      references: {
-        model: "dictionary",
-        key: "id",
-      },
     },
   },
   {

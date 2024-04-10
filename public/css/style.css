@@ -1,8 +1,7 @@
-body {
+body.my-background-class {
     /* Adjust for background size and repeat */
-    background-image: url('/views/img/white-wooden-texture-flooring-background.jpg');
+    background-image: url('/public/img/panelbackground.png');
     background-size: cover;
     background-repeat: no-repeat;
-    
 }
 
