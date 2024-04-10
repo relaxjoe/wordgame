@@ -33,6 +33,7 @@ router.get("/getNewWord", async (req, res) => {
 });
 
 
+//move to user controller, 
 router.put("/completed/:word_id", async (req, res) => {
     try {
       const userData = await User.findByPk(req.session.user_id);

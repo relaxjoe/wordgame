@@ -1,15 +1,29 @@
 // const { User, Dictionary } = require('../models');
 // const fetch = require("node-fetch-retry");
 
-const getDictionaryData = async () => {
+
+//calls when user begins game
+const getWord = async () => {
+  try {
+    const word = await fetch("/api/dictionary/getNewWord");
+    const wordData = await word.json();
+    console.log(wordData);
+  } catch (err) {
+    console.log("error");
+  }
+};
+
+// getWord();
+
+//call function when user completes all parts of section, and pass the word_id, play again should call 
+const completeWord = async (wordId) => {
     try {
-        const dictionary = await fetch(/api/dictionary)
+        const w = await fetch(`/api/dictionary/completed/${wordId}`);
+        alert("word complete!!")
+    } catch (err) {
+        console.log("error")
     }
-} 
-
-
-
-
+}
 // let wordId = 1;
 // TO DO: Check if the word is in the user's completed list and return true or false
 
@@ -35,25 +49,23 @@ const getDictionaryData = async () => {
 //     }
 // };
 
-
 // // TO DO: Fetch the next word on the list
 const fetchNext = async () => {
-    try {
-        const response = await fetch(`/api/dictionary/${wordId}`, {
-            method: 'GET'
-        });
-        if(response.ok) {
-            const newWord = await response.json();
-            console.log(JSON.stringify(newWord.word));
-            return JSON.stringify(newWord.word);
-        } else {
-        throw new Error('Failed to retrieve a new word.')
-        }
-    } catch (error) {
-        console.log(error);
-        throw new Error('Failed to retrieve a new word.')
+  try {
+    const response = await fetch(`/api/dictionary/${wordId}`, {
+      method: "GET",
+    });
+    if (response.ok) {
+      const newWord = await response.json();
+      console.log(JSON.stringify(newWord.word));
+      return JSON.stringify(newWord.word);
+    } else {
+      throw new Error("Failed to retrieve a new word.");
     }
-
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to retrieve a new word.");
+  }
 };
 
 // // Turn the word into an array
@@ -91,7 +103,6 @@ const fetchNext = async () => {
 //     checkGray();
 // };
 
-
 // // TO DO: Get the user's guess and split it like in the line above
 // const processGuess = async (userId, guess) => {
 //     try {
@@ -110,9 +121,6 @@ const fetchNext = async () => {
 //         // Handle error
 //     }
 // };
-
-
-
 
 // // Example usage:
 // const userId = 1; // Assuming the user ID is 1
