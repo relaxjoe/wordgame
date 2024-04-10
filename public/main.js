@@ -5,6 +5,7 @@ const board = document.querySelector('#board');
 let secretWord;
 let wordArray;
 let guessArray;
+let wordId;
 let guessCount = 0;
 
 //calls when user begins game
@@ -13,6 +14,7 @@ const getWord = async () => {
     const response = await fetch("/api/dictionary/getNewWord");
     const data = await response.json();
     secretWord = data.word.word;
+    wordId = data.word.id;
     wordArray = secretWord.split('')
   } catch (err) {
     console.log(err);
@@ -22,14 +24,26 @@ const getWord = async () => {
 
 
 //call function when user completes all parts of section, and pass the word_id, play again should call 
-const completeWord = async (wordId) => {
+const completeWord = async () => {
     try {
-        const w = await fetch(`/api/dictionary/completed/${wordId}`);
-        alert("word complete!!")
+        const w = await fetch(`/api/dictionary/completed/${wordId}`, {
+            method: 'PUT'
+        });
+        alert("Word Complete!!")
+        location.reload();
     } catch (err) {
         console.log("error")
     }
 };
+
+function checkSolved() {
+    const guessString = JSON.stringify(guessArray);
+    const wordString = JSON.stringify(wordArray);
+    if(guessString === wordString) {
+        completeWord();
+        console.log('Solved!');
+    }
+}
 
 // Checks for yellow letters
 function checkPresent(increment, cloneArray) {
@@ -46,11 +60,12 @@ function checkPresent(increment, cloneArray) {
                 board.children[i + increment].setAttribute('style', 'background-color: yellow;');
             }
         }
-    };
+    }
 }
 
 
 function checkLetters(increment) {
+    checkSolved();
     const cloneArray = [...wordArray];
     for(let i = 0; i < 4; i++) {
 
@@ -61,7 +76,8 @@ function checkLetters(increment) {
         if(cloneArray[i] === guessArray[i]) {
             board.children[i + increment].setAttribute('style', 'background-color: green;');
             // Disguises the correct letter so it's not tagged by checkPresent
-            cloneArray[i] = '#';            
+            cloneArray[i] = '#';
+                        
         }
     };
     checkPresent(increment, cloneArray);
@@ -78,9 +94,12 @@ const renderGuess = (guessArray) => {
 
 btn.addEventListener('click', function() {
     guessArray = guessField.value.split('');
-    console.log(wordArray);
-    renderGuess(guessArray);
-    guessCount++;
+    if(guessField.value.length === 4) {
+        renderGuess(guessArray);
+        guessCount++;
+    } else {
+        alert('Guess must be 4 letters!');
+    }
 });
 
 
