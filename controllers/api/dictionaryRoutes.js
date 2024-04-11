@@ -25,25 +25,26 @@ router.get("/getNewWord", async (req, res) => {
       (item) => !userCompletedWords.has(item.id)
     );
     const randomIndex = parseInt(Math.random() * uncompletedWords.length);
-    res.json({ word: uncompletedWords[randomIndex]});
+    res.json({ word: uncompletedWords[randomIndex] });
   } catch (err) {
     res.status(500).json({ message: "Internal error" });
   }
 });
 
-
-//move to user controller, 
+//move to user controller,
 router.put("/completed/:word_id", async (req, res) => {
-    try {
-      const userData = await User.findByPk(req.session.user_id);
-      const completedWords = userData.word_id + "," + req.params.word_id;
-      const updatedUser = await User.update({word_id: completedWords}, {where: {id: userData.id}});
-      res.json({ updatedUser });
-    } catch (err) {
-      res.status(500).json({ message: "Internal error" });
-    }
-  });
-
+  try {
+    const userData = await User.findByPk(req.session.user_id);
+    const completedWords = userData.word_id + "," + req.params.word_id;
+    const updatedUser = await User.update(
+      { word_id: completedWords },
+      { where: { id: userData.id } }
+    );
+    res.json({ updatedUser });
+  } catch (err) {
+    res.status(500).json({ message: "Internal error" });
+  }
+});
 
 // Get one word
 router.get("/:id", async (req, res) => {
