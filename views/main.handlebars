@@ -31,17 +31,19 @@
           <span class="text-lg font-bold text-gray-700">SCORE: {{score}}</span>
         </div>
 
-        <div class="flex sm:flex-row flex-col gap-3 mb-4 justify-center items-center p-4">
+        <div
+          class="flex sm:flex-row flex-col gap-3 mb-4 justify-center items-center p-4"
+        >
           <a
             href="/api/user/newgame"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
           >New Game</a>
-        
-            <button
-              onclick="openModal()"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >How To Play</button>
-          
+
+          <button
+            onclick="openModal()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >How To Play</button>
+
           <a
             href="api/logout"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -59,9 +61,9 @@
             <h2 class="text-3xl font-bold mb-4 text-center">Instructions</h2>
             <p class="flex flex-col text-center">
               You have to guess the hidden word in 6 tries and the color of the
-              letters 
-              <br>changes to show how close you are.
-              <br>To start the game, just enter any word, for example:
+              letters
+              <br />changes to show how close you are.
+              <br />To start the game, just enter any word, for example:
             </p>
             <img
               class="p-4 w-3/4 mx-auto"
@@ -80,7 +82,7 @@
                   alt="Letter I example"
                   class="h-12 w-12"
                 />
-                
+
                 <img
                   src="/img/wrongspotletter2.png"
                   alt="Letter N example"
@@ -97,9 +99,17 @@
 
             <div class="flex flex-col items-center gap-1 p-2">
               <p>Another try to find matching letters in the target word. </p>
-              <img class="p-4 w-3/4 mx-auto" src="/img/almostcompleteword.png" alt="Almost Complete word img">
+              <img
+                class="p-4 w-3/4 mx-auto"
+                src="/img/almostcompleteword.png"
+                alt="Almost Complete word img"
+              />
               <p>So close!</p>
-              <img class="p-4 w-3/4 mx-auto" src="/img/completeword.png" alt="Complete Word img">
+              <img
+                class="p-4 w-3/4 mx-auto"
+                src="/img/completeword.png"
+                alt="Complete Word img"
+              />
               <p>&#127881; Got it! &#x1F389;</p>
             </div>
 
@@ -109,6 +119,27 @@
             >Close</button>
           </div>
         </div>
+        <!-- Completed Word Popup Modal -->
+        <div
+          id="completeModal"
+          class="fixed inset-0 flex items-center justify-center hidden"
+        >
+          <div
+            class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto"
+          >
+            <div class="modal-content py-4 text-center px-6">
+              <span
+                class="close absolute top-0 right-0 mt-4 mr-4 text-gray-600 cursor-pointer"
+              >&times;</span>
+              <p class="text-lg">Congratulations! You completed the word.</p>
+              <button
+                id="next-word-btn"
+                class="block mx-auto mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              >Next Word</button>
+            </div>
+          </div>
+        </div>
+
         <!-- 4x6 grid for the game -->
         <div
           id="board"
@@ -116,64 +147,64 @@
           style="width: 500px; height: 650px;"
         >
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="gridCell w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
 
         </div>
