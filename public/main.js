@@ -7,16 +7,17 @@ const modalButton = document.getElementById("next-word-btn");
 let secretWord;
 let wordArray;
 let guessArray;
+let wordId;
 let guessCount = 0;
 
 // Function to open the completed modal
 function openCompletedModal() {
-  modal.classList.remove('hidden');
+  modal.classList.remove("hidden");
 }
 
 // Function to close the completed modal
 function closeCompletedModal() {
-  modal.classList.add('hidden');
+  modal.classList.add("hidden");
 }
 
 // Function to get a new word
@@ -118,7 +119,7 @@ btn.addEventListener("click", function () {
 });
 
 // Event listener for modal button to fetch new word and reset grid
-modalButton.addEventListener('click', async function () {
+modalButton.addEventListener("click", async function () {
   closeCompletedModal(); // Close completed modal
   await getNewWord(); // Fetch new word
   resetGrid(); // Reset grid
@@ -126,11 +127,12 @@ modalButton.addEventListener('click', async function () {
 
 // Function to reset grid box text and color
 const resetGrid = () => {
-  const cells = document.querySelectorAll('.gridCell');
-  cells.forEach(cell => {
-    cell.textContent = '';
-    cell.style.backgroundColor = 'gray';
+  const cells = document.querySelectorAll(".gridCell");
+  cells.forEach((cell) => {
+    cell.textContent = "";
+    cell.style.backgroundColor = "gray";
   });
+  guessCount = 0;
 };
 
 getNewWord(); // Fetch initial word
