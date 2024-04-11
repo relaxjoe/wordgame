@@ -101,7 +101,7 @@ const renderGuess = (guessArray, wordId) => {
   if (guessArray.join("") === secretWord) {
     markWordCompleted(wordId); // Mark word as completed
     openCompletedModal(); // Open completed modal when word is completed
-  } else if(guessCount === 4) {
+  } else if (guessCount === 4) {
     location.reload();
   }
 };
@@ -185,4 +185,13 @@ function closeLogoutModal() {
   document.getElementById("logoutModal").classList.add("hidden");
 }
 
+// Function to open the modal
+function openModal() {
+  document.getElementById("modal").style.display = "flex";
+}
+
+// Function to close the modal
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
 getNewWord(); // Fetch initial word
