@@ -77,15 +77,34 @@ const renderGuess = (guessArray) => {
 };
 
 btn.addEventListener('click', function() {
+    // Split the input value into an array of characters
     guessArray = guessField.value.split('');
+    
+    // Check if exactly 4 characters have been entered
+    if (guessArray.length !== 4) {
+        alert('Please enter exactly 4 letters.');
+        return; // Exit the function early if validation fails
+    }
+    
+    // Continue with the game logic if validation passes
     console.log(wordArray);
     renderGuess(guessArray);
     guessCount++;
 });
 
 
+// Function to open the modal
+function openModal() {
+    document.getElementById('modal').style.display = 'flex';
+}
 
+// Function to close the modal
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
 
 getWord();
+
+
 
 

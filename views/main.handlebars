@@ -9,111 +9,184 @@
     />
     <link rel="stylesheet" href="./css/style.css" />
     <style>
-       body { /* Adjust for background size and repeat */ background-image:
-      url('/img/panelbackground.png'); background-size:
-      cover; background-repeat: no-repeat; }
+      body { /* Adjust for background size and repeat */ background-image:
+      url('/img/panelbackground.png'); background-size: cover;
+      background-repeat: no-repeat; } /* Style for modal background */
+      .modal-background { display: none; position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); /*
+      Semi-transparent black */ justify-content: center; align-items: center; }
+      /* Style for modal content */ .modal-content { background-color: white;
+      padding: 20px; border-radius: 8px; }
     </style>
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-1/5">
     <!-- email and the game grid -->
     <div class="container mx-auto px-4 py-8">
-      <div class="flex justify-between">
-      <!-- User Email Display -->
-        <div class="flex flex-col p-4 ">
-          <span class="text-md text-gray-700">USER: {{email}}</span>
-          <span class="text-md text-gray-700">SCORE: {{score}}</span>
+      <div
+        class="flex flex flex-col sm:flex-row justify-between bg-gray-300 mx-auto"
+      >
+        <!-- User Email Display -->
+        <div class="flex flex-col justify-between p-4">
+          <span class="text-lg font-bold text-gray-700">USER: {{email}}</span>
+          <span class="text-lg font-bold text-gray-700">SCORE: {{score}}</span>
         </div>
 
-        <div class="flex flex-row p-4 gap-3">
+        <div class="flex sm:flex-row flex-col gap-3 mb-4 justify-center items-center p-4">
           <a
             href="/api/user/newgame"
-            class="h-16 px-6  hover:bg-blue-700 text-white font-bold py-4 px-4 border border-blue-500 bg-blue-500 hover:border-gray-500 transition-colors duration-300"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
           >New Game</a>
+        
+            <button
+              onclick="openModal()"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >How To Play</button>
+          
           <a
             href="api/logout"
-            class="h-16 px-6 hover:bg-blue-700 text-white font-bold py-4 px-4 border border-blue-500 bg-blue-500 hover:border-gray-500 transition-colors duration-300"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >Logout</a>
         </div>
       </div>
-
+      <br />
       <!-- Game Grid -->
-      <div class="flex flex-col justify-center items-center bg-white max-h-lg max-w-lg mx-auto">
+      <div
+        class="flex flex-col justify-center items-center max-h-lg max-w-lg mx-auto"
+      >
+        <!-- Modal for instructions -->
+        <div id="modal" class="modal-background">
+          <div class="modal-content flex flex-col">
+            <h2 class="text-3xl font-bold mb-4 text-center">Instructions</h2>
+            <p class="flex flex-col text-center">
+              You have to guess the hidden word in 6 tries and the color of the
+              letters 
+              <br>changes to show how close you are.
+              <br>To start the game, just enter any word, for example:
+            </p>
+            <img
+              class="p-4 w-3/4 mx-auto"
+              src="/img/examplewordguess.png"
+              alt="Word Guess"
+            />
+            <div class="flex flex-col p-2 bg-gray-200">
+              <div class="flex flex-row items-center p-1">
+                <img src="/img/wrongletter.png" alt="" class="h-12 w-12" />
+                <span class="p-1">is not in the target word at all.</span>
+              </div>
+              <br />
+              <div class="flex flex-row items-center gap-1 p-1">
+                <img
+                  src="/img/wrongspotletter.png"
+                  alt="Letter I example"
+                  class="h-12 w-12"
+                />
+                
+                <img
+                  src="/img/wrongspotletter2.png"
+                  alt="Letter N example"
+                  class="h-12 w-12"
+                />
+                <span>is in the word but in the wrong spot.</span>
+              </div>
+              <br />
+              <div class="flex flex-row items-center gap-1 p-1">
+                <img src="/img/correctletter.png" alt="" class="h-12 w-12" />
+                <span> is in the word and in the correct spot.</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 p-2">
+              <p>Another try to find matching letters in the target word. </p>
+              <img class="p-4 w-3/4 mx-auto" src="/img/almostcompleteword.png" alt="Almost Complete word img">
+              <p>So close!</p>
+              <img class="p-4 w-3/4 mx-auto" src="/img/completeword.png" alt="Complete Word img">
+              <p>&#127881; Got it! &#x1F389;</p>
+            </div>
+
+            <button
+              onclick="closeModal()"
+              class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            >Close</button>
+          </div>
+        </div>
         <!-- 4x6 grid for the game -->
         <div
           id="board"
-          class="p-4 grid grid-cols-4 gap-1"
+          class="bg-white flex p-4 flex-wrap grid grid-cols-4 gap-1"
           style="width: 500px; height: 650px;"
         >
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
           <div
-            class="w-125 h-100 bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
+            class="w-20% h-20% bg-gray-300 border border-gray-300 flex justify-center items-center text-3xl font-bold uppercase"
           ></div>
 
         </div>
+
         <div class="mb-4 mx-auto max-w-xs">
           <input
-            class="p-2 px-1 bg-gray-300 border-2 form-input text-bold text-center"
+            class="p-2 px-1 bg-gray-200 border-2 border-black form-input text-bold text-center"
             id="guess-field"
             type="text"
             maxlength="4"
           />
         </div>
+
         <div class="mb-4">
           <button
             class="h-16 px-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
