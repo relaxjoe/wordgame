@@ -3,6 +3,7 @@ const guessField = document.querySelector("#guess-field");
 const board = document.querySelector("#board");
 const modal = document.getElementById("completeModal");
 const modalButton = document.getElementById("next-word-btn");
+const newGameButton = document.getElementById('new-game-btn');
 
 let secretWord;
 let wordArray;
@@ -134,5 +135,12 @@ const resetGrid = () => {
   });
   guessCount = 0;
 };
+
+// get new word when "New Word" button is clicked
+newGameButton.addEventListener('click', async function() {
+  closeCompletedModal(); // Close completed modal if open
+  await getNewWord(); // Fetch new word
+  resetGrid(); // Reset grid and gameplay
+});
 
 getNewWord(); // Fetch initial word
