@@ -102,12 +102,6 @@ btn.addEventListener('click', function() {
     }
 });
 
-// Reset button function
-const resetButton = document.getElementById('reset-button');
-resetButton.addEventListener('click', () => {
-  resetGame();
-  console.log('Game reset')
-});
 
 
 getWord();
