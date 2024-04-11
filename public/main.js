@@ -3,7 +3,8 @@ const guessField = document.querySelector("#guess-field");
 const board = document.querySelector("#board");
 const modal = document.getElementById("completeModal");
 const modalButton = document.getElementById("next-word-btn");
-const newGameButton = document.getElementById('new-game-btn');
+const newGameButton = document.getElementById("new-game-btn");
+const logoutButton = document.getElementById("logout-btn");
 
 let secretWord;
 let wordArray;
@@ -137,10 +138,49 @@ const resetGrid = () => {
 };
 
 // get new word when "New Word" button is clicked
-newGameButton.addEventListener('click', async function() {
+newGameButton.addEventListener("click", async function () {
   closeCompletedModal(); // Close completed modal if open
   await getNewWord(); // Fetch new word
   resetGrid(); // Reset grid and gameplay
 });
+
+//User logout
+logoutButton.addEventListener("click", async function () {
+  try {
+    const response = await fetch("/api/user/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      console.log("User logged out successfully");
+      // Show logout confirmation modal
+      openLogoutModal();
+
+      // Redirect to root page after a delay
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000); // Adjust the delay time as needed
+    } else {
+      console.log("Failed to log out user");
+      // Handle the error response
+    }
+  } catch (error) {
+    console.error("Error logging out:", error);
+    // Handle any network or server errors
+  }
+});
+
+// Function to open logout confirmation modal
+function openLogoutModal() {
+  document.getElementById("logoutModal").classList.remove("hidden");
+}
+
+// Function to close logout confirmation modal
+function closeLogoutModal() {
+  document.getElementById("logoutModal").classList.add("hidden");
+}
 
 getNewWord(); // Fetch initial word
