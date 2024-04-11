@@ -134,7 +134,7 @@ const resetGrid = () => {
   const cells = document.querySelectorAll(".gridCell");
   cells.forEach((cell) => {
     cell.textContent = "";
-    cell.style.backgroundColor = "gray";
+    cell.style.backgroundColor = "bg-gray-300";
   });
   guessCount = 0;
 };
