@@ -25,20 +25,30 @@ const loginFormHandler = async (event) => {
 const signupFormHandler = async (event) => {
   event.preventDefault();
 
-
   const email = document.querySelector("#email-signup").value.trim();
   const password = document.querySelector("#password-signup").value.trim();
 
   if (email && password) {
-    const response = await fetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify({email, password }),
-      headers: { "Content-Type": "application/json" },
-    });
-    
-
+    try {
+      const response = await fetch("/api/user/signup", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        // If successful, redirect the browser to the main page
+        document.location.replace("/main");
+      } else {
+        // Handle any errors in the response
+        alert(response.statusText);
+      }
+    } catch (error) {
+      // Handle any network or server errors
+      console.error("Error signing up:", error);
+      alert("Error signing up. Please try again later.");
+    }
+  }
 };
-}
 
 document
   .querySelector(".login-card")
