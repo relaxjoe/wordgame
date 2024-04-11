@@ -101,6 +101,8 @@ const renderGuess = (guessArray, wordId) => {
   if (guessArray.join("") === secretWord) {
     markWordCompleted(wordId); // Mark word as completed
     openCompletedModal(); // Open completed modal when word is completed
+  } else if(guessCount === 4) {
+    location.reload();
   }
 };
 
