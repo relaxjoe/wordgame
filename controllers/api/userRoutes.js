@@ -39,9 +39,9 @@ router.post("/signup", validateUserInput, async (req, res) => {
   }
 });
 
-router.post('/seed', async (req, res) => {
+router.get('/seed', async (req, res) => {
   try{
-    seedDatabase();
+     await seedDatabase();
   } catch (err){
     res.status(500).json(err)
   }
