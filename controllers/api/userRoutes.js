@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { User } = require("../../models");
-const seedDatabase = require('../../seeds/seed');
+const { seedDatabase } = require('../../seeds/seed');
 
 // Validation middleware for user input
 const validateUserInput = (req, res, next) => {
@@ -42,6 +42,7 @@ router.post("/signup", validateUserInput, async (req, res) => {
 router.get('/seed', async (req, res) => {
   try{
      await seedDatabase();
+     res.status(200);
   } catch (err){
     res.status(500).json(err)
   }

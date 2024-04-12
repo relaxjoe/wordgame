@@ -41,8 +41,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use(routes);
 
-seedDatabase();
-
 sequelize.sync({ force: false }).then(() => {
   app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
 });
