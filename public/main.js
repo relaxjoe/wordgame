@@ -134,8 +134,11 @@ const resetGrid = () => {
   const cells = document.querySelectorAll(".gridCell");
   cells.forEach((cell) => {
     cell.textContent = "";
-    cell.style.backgroundColor = "bg-gray-300";
+    cell.style.backgroundColor = "gray";
   });
+  // Reset the input field to empty
+  const guessField = document.querySelector("#guess-field");
+  guessField.value = "";
   guessCount = 0;
 };
 
