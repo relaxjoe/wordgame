@@ -1,4 +1,5 @@
 require("dotenv").config(); // This line should be at the very top
+const seedDatabase = require('./seeds/seed.js');
 
 const express = require("express");
 const exphbs = require("express-handlebars");
@@ -39,6 +40,8 @@ app.use(express.urlencoded({ extended: true }));
 // Use the authentication routes
 app.use("/auth", authRoutes);
 app.use(routes);
+
+seedDatabase();
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
