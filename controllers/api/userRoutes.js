@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { User } = require("../../models");
+const { seedDatabase } = require('../../seeds/seed');
 
 // Validation middleware for user input
 const validateUserInput = (req, res, next) => {
@@ -27,7 +28,7 @@ router.post("/signup", validateUserInput, async (req, res) => {
     // Redirect to main gameplay page upon successful signup
     req.session.user_id = newUser.id;
     req.session.logged_in = true;
-    req.session.email = newUser.email;
+    req.session.email = userData.email;
     req.session.save();
     res.redirect("main");
   } catch (error) {
@@ -35,6 +36,15 @@ router.post("/signup", validateUserInput, async (req, res) => {
     res
       .status(500)
       .json({ error: "Internal Server Error", message: error.message });
+  }
+});
+
+router.get('/seed', async (req, res) => {
+  try{
+     await seedDatabase();
+     res.status(200);
+  } catch (err){
+    res.status(500).json(err)
   }
 });
 
@@ -85,6 +95,6 @@ router.post("/logout", (req, res) => {
   }
 });
 
-router;
+router 
 
 module.exports = router;

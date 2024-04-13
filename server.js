@@ -1,4 +1,5 @@
 require("dotenv").config(); // This line should be at the very top
+const seedDatabase = require('./seeds/seed.js');
 
 const express = require("express");
 const exphbs = require("express-handlebars");
