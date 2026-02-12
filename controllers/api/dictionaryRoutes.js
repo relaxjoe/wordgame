@@ -16,33 +16,97 @@ router.get("/", async (req, res) => {
 
 router.get("/getNewWord", async (req, res) => {
   try {
+    // Check if user is authenticated
+    if (!req.session.user_id) {
+      return res.status(401).json({ message: "Please log in to play" });
+    }
+
     const words = await Dictionary.findAll();
+    
+    if (!words || words.length === 0) {
+      return res.status(404).json({ message: "No words available" });
+    }
+
     const userData = await User.findByPk(req.session.user_id);
-    const userCompletedWords = new Set(
-      userData.word_id.split(",").map((item) => parseInt(item))
-    );
+    
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Parse completed words safely
+    const completedWordIds = userData.word_id 
+      ? userData.word_id.split(",").filter(id => id).map(id => parseInt(id))
+      : [];
+    
+    const userCompletedWords = new Set(completedWordIds);
+    
     const uncompletedWords = words.filter(
       (item) => !userCompletedWords.has(item.id)
     );
-    const randomIndex = parseInt(Math.random() * uncompletedWords.length);
+
+    // If all words are completed, reset or return a message
+    if (uncompletedWords.length === 0) {
+      return res.status(200).json({ 
+        message: "Congratulations! You've completed all words!",
+        allCompleted: true 
+      });
+    }
+
+    const randomIndex = Math.floor(Math.random() * uncompletedWords.length);
     res.json({ word: uncompletedWords[randomIndex] });
   } catch (err) {
-    res.status(500).json({ message: "Internal error" });
+    console.error("Error getting new word:", err);
+    res.status(500).json({ message: "Internal error", error: err.message });
   }
 });
 
 //move to user controller,
 router.put("/completed/:word_id", async (req, res) => {
   try {
+    // Check if user is authenticated
+    if (!req.session.user_id) {
+      return res.status(401).json({ message: "Please log in" });
+    }
+
+    const wordId = parseInt(req.params.word_id);
+    
+    if (isNaN(wordId)) {
+      return res.status(400).json({ message: "Invalid word ID" });
+    }
+
     const userData = await User.findByPk(req.session.user_id);
-    const completedWords = userData.word_id + "," + req.params.word_id;
-    const updatedUser = await User.update(
+    
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Parse existing completed words
+    const existingWords = userData.word_id 
+      ? userData.word_id.split(",").filter(id => id).map(id => parseInt(id))
+      : [];
+
+    // Check if word is already completed
+    if (existingWords.includes(wordId)) {
+      return res.json({ message: "Word already completed", updatedUser: userData });
+    }
+
+    // Add new word to completed list
+    existingWords.push(wordId);
+    const completedWords = existingWords.join(",");
+
+    const [updatedCount] = await User.update(
       { word_id: completedWords },
       { where: { id: userData.id } }
     );
-    res.json({ updatedUser });
+
+    if (updatedCount === 0) {
+      return res.status(500).json({ message: "Failed to update user" });
+    }
+
+    res.json({ message: "Word marked as completed", completedWords });
   } catch (err) {
-    res.status(500).json({ message: "Internal error" });
+    console.error("Error marking word as completed:", err);
+    res.status(500).json({ message: "Internal error", error: err.message });
   }
 });
 
