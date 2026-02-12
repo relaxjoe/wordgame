@@ -28,6 +28,7 @@ const getNewWord = async () => {
     const response = await fetch("/api/dictionary/getNewWord");
     const data = await response.json();
     secretWord = data.word.word;
+    wordId = data.word.id;
     wordArray = secretWord.split("");
   } catch (err) {
     console.log(err);
@@ -37,8 +38,15 @@ const getNewWord = async () => {
 // Function to mark the word as completed
 const markWordCompleted = async (wordId) => {
   try {
-    const response = await fetch(`/api/dictionary/completed/${wordId}`);
-    // Do something with the response if needed
+    const response = await fetch(`/api/dictionary/completed/${wordId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      console.log("Word marked as completed successfully");
+    }
   } catch (err) {
     console.log("Error marking word as completed:", err);
   }
@@ -118,7 +126,7 @@ btn.addEventListener("click", function () {
 
   // Continue with the game logic if validation passes
   console.log(wordArray);
-  renderGuess(guessArray);
+  renderGuess(guessArray, wordId);
   guessCount++;
 });
 

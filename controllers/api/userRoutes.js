@@ -28,7 +28,7 @@ router.post("/signup", validateUserInput, async (req, res) => {
     // Redirect to main gameplay page upon successful signup
     req.session.user_id = newUser.id;
     req.session.logged_in = true;
-    req.session.email = userData.email;
+    req.session.email = newUser.email;
     req.session.save();
     res.redirect("main");
   } catch (error) {
@@ -94,7 +94,5 @@ router.post("/logout", (req, res) => {
     res.status(404).end();
   }
 });
-
-router 
 
 module.exports = router;

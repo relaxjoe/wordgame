@@ -10,13 +10,22 @@ const routes = require("./controllers");
 
 const app = express();
 const port = process.env.PORT || 3001;
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: 'secret',
+
+// Session configuration with environment-based secret
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET || 'temporary-dev-secret-change-in-production',
   resave: false,
-  saveUninitialized: true,
-  // cookie: { secure: true }
-}))
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  },
+};
+
+app.set('trust proxy', 1); // trust first proxy
+app.use(session(sessionConfig));
 
 // Set up handlebars engine
 const hbs = exphbs.create();
