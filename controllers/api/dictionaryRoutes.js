@@ -145,12 +145,12 @@ router.put("/:id", async (req, res) => {
 // Delete dictionary entry
 router.delete("/:id", async (req, res) => {
   try {
-    const deleteEntry = await Dictionary.destroy({
+    const deletedCount = await Dictionary.destroy({
       where: {
         id: req.params.id,
       },
     });
-    res.json({ deleted: deleteEntry });
+    res.json({ deleted: deletedCount });
   } catch (err) {
     console.error("Error deleting entry:", err);
     res.status(400).json({ message: "Failed to delete entry" });
