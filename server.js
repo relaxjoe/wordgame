@@ -4,6 +4,7 @@ const seedDatabase = require('./seeds/seed.js');
 const express = require("express");
 const exphbs = require("express-handlebars");
 const session = require('express-session');
+const { doubleCsrf } = require('csrf-csrf');
 const sequelize = require("./config/connection");
 const authRoutes = require("./utils/auth");
 const routes = require("./controllers");
@@ -26,6 +27,24 @@ const sessionConfig = {
 
 app.set('trust proxy', 1); // trust first proxy
 app.use(session(sessionConfig));
+
+// CSRF Protection Configuration
+const {
+  generateToken, // Use this in routes to generate a new CSRF token
+  doubleCsrfProtection, // Use this middleware in routes that need CSRF protection
+} = doubleCsrf({
+  getSecret: () => process.env.SESSION_SECRET || 'temporary-dev-secret-change-in-production',
+  cookieName: '__Host-csrf.token',
+  cookieOptions: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  },
+  getTokenFromRequest: (req) => req.body._csrf || req.headers['x-csrf-token'],
+});
+
+// Make CSRF token generator available to routes
+app.locals.generateCsrfToken = generateToken;
 
 // Set up handlebars engine
 const hbs = exphbs.create();

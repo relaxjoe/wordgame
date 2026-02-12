@@ -150,6 +150,7 @@ wordgame/
 
 - Environment-based session secrets
 - Secure session cookies (httpOnly, secure in production, sameSite)
+- CSRF (Cross-Site Request Forgery) protection on all routes
 - Password hashing with bcrypt
 - Input validation and sanitization
 - Email format validation
