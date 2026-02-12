@@ -12,6 +12,19 @@ const validateUserInput = (req, res, next) => {
     return res.status(400).json({ message: "Email and password required" });
   }
 
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    console.log("Error: Invalid email format");
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  // Validate password strength (at least 8 characters)
+  if (password.length < 8) {
+    console.log("Error: Password must be at least 8 characters");
+    return res.status(400).json({ message: "Password must be at least 8 characters" });
+  }
+
   // If all validation passes
   console.log("Validation successful");
   next();
@@ -21,16 +34,24 @@ router.post("/signup", validateUserInput, async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Check if user already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
     const newUser = await User.create({
       email,
       password,
+      word_id: "", // Initialize with empty string
     });
-    // Redirect to main gameplay page upon successful signup
+    // Set session and redirect to main gameplay page
     req.session.user_id = newUser.id;
     req.session.logged_in = true;
-    req.session.email = userData.email;
-    req.session.save();
-    res.redirect("main");
+    req.session.email = newUser.email;
+    req.session.save(() => {
+      res.redirect("/main");
+    });
   } catch (error) {
     console.error("Error:", error);
     res
@@ -48,7 +69,6 @@ router.get('/seed', async (req, res) => {
   }
 });
 
-// Finding user by email
 router.post("/login", validateUserInput, async (req, res) => {
   try {
     console.log("Logging in user...");
@@ -68,15 +88,17 @@ router.post("/login", validateUserInput, async (req, res) => {
     req.session.logged_in = true;
     req.session.email = userData.email;
     console.log("User logged in successfully");
-    req.session.save();
-    // Respond with user data and success message
-    res.json({ user: userData, message: "You are now logged in!" });
+    
+    // Save session and respond
+    req.session.save(() => {
+      res.json({ user: userData, message: "You are now logged in!" });
+    });
   } catch (err) {
     console.error("Error logging in user:", err);
     // Error response if login fails
     res
       .status(500)
-      .json({ error: "Internal Server Error", message: error.message });
+      .json({ error: "Internal Server Error", message: err.message });
   }
 });
 
@@ -94,7 +116,5 @@ router.post("/logout", (req, res) => {
     res.status(404).end();
   }
 });
-
-router 
 
 module.exports = router;

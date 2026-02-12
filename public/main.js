@@ -27,18 +27,41 @@ const getNewWord = async () => {
   try {
     const response = await fetch("/api/dictionary/getNewWord");
     const data = await response.json();
-    secretWord = data.word.word;
-    wordArray = secretWord.split("");
+    
+    if (!response.ok) {
+      console.error("Error fetching word:", data.message);
+      if (data.allCompleted) {
+        alert("Congratulations! You've completed all available words!");
+      } else {
+        alert(data.message || "Error loading word. Please try again.");
+      }
+      return;
+    }
+    
+    if (data.word) {
+      secretWord = data.word.word.toLowerCase();
+      wordId = data.word.id;
+      wordArray = secretWord.split("");
+      console.log("New word loaded successfully");
+    }
   } catch (err) {
-    console.log(err);
+    console.error("Error loading word:", err);
+    alert("Failed to load word. Please refresh the page.");
   }
 };
 
 // Function to mark the word as completed
 const markWordCompleted = async (wordId) => {
   try {
-    const response = await fetch(`/api/dictionary/completed/${wordId}`);
-    // Do something with the response if needed
+    const response = await fetch(`/api/dictionary/completed/${wordId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      console.log("Word marked as completed successfully");
+    }
   } catch (err) {
     console.log("Error marking word as completed:", err);
   }
@@ -94,21 +117,40 @@ function checkLetters(increment) {
 const renderGuess = (guessArray, wordId) => {
   const increment = guessCount * 4;
   for (let i = 0; i < 4; i++) {
-    board.children[i + increment].append(guessArray[i]);
+    board.children[i + increment].textContent = guessArray[i];
   }
   checkLetters(increment);
+  
   // Check if the guessed word matches the secret word
   if (guessArray.join("") === secretWord) {
+    console.log("Word completed! ID:", wordId);
     markWordCompleted(wordId); // Mark word as completed
     openCompletedModal(); // Open completed modal when word is completed
-  } else if (guessCount === 4) {
-    location.reload();
+  } else if (guessCount >= 4) {
+    // Game over - all 5 attempts used (guessCount goes from 0 to 4)
+    setTimeout(() => {
+      alert(`Game Over! The word was: ${secretWord.toUpperCase()}`);
+      location.reload();
+    }, 500);
   }
 };
 
 btn.addEventListener("click", function () {
-  // Split the input value into an array of characters
-  guessArray = guessField.value.split("");
+  submitGuess();
+});
+
+// Add Enter key support for guess field
+guessField.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    submitGuess();
+  }
+});
+
+// Function to submit a guess
+function submitGuess() {
+  // Split the input value into an array of characters and convert to lowercase
+  guessArray = guessField.value.toLowerCase().trim().split("");
 
   // Check if exactly 4 characters have been entered
   if (guessArray.length !== 4) {
@@ -116,11 +158,22 @@ btn.addEventListener("click", function () {
     return; // Exit the function early if validation fails
   }
 
+  // Check if all characters are letters
+  const allLetters = guessArray.every(char => /^[a-z]$/.test(char));
+  if (!allLetters) {
+    alert("Please enter only letters (a-z).");
+    return;
+  }
+
   // Continue with the game logic if validation passes
-  console.log(wordArray);
-  renderGuess(guessArray);
+  console.log("Secret word:", wordArray);
+  console.log("Your guess:", guessArray);
+  renderGuess(guessArray, wordId);
   guessCount++;
-});
+  
+  // Clear input field after guess
+  guessField.value = "";
+}
 
 // Event listener for modal button to fetch new word and reset grid
 modalButton.addEventListener("click", async function () {

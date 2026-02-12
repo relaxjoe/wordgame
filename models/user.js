@@ -34,14 +34,18 @@ User.init(
     score: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
     streak: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
     word_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
+      defaultValue: "",
+      comment: "Comma-separated list of completed word IDs",
     },
   },
   {
